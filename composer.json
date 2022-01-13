@@ -1,0 +1,17 @@
+{
+  "name": "teknologi/teknologi-pp-rev-p2p-integration",
+  "description": "PublishPress Revisions integration with Posts To Posts",
+  "keywords": ["wordpress", "publishpress-revisions"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hans Czajkowski Jørgensen",
+      "email": "hcj@tekno.dk"
+    }
+  ],
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.3.2",
+    "composer/installers": "^1.4"
+  }
+}
