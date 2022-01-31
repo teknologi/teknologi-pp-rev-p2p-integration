@@ -68,9 +68,17 @@ add_filter('p2p_other_query_vars', function($qv) {
 
                 // Connect the posts connected to the base post to the revision post
                 foreach ($connected_posts as $connected_post) {
-                    p2p_type($revision_post_connection->name)->connect($revision_post->ID, $connected_post->ID, array(
-                        'date' => current_time('mysql')
-                    ));
+                    $new_connection_id = p2p_type($revision_post_connection->name)->connect($revision_post->ID, $connected_post->ID);
+
+                    // also copy over post connection meta for projects
+                    if ($revision_post_connection->name == 'contacts_to_projects' && is_int($new_connection_id) ) {
+                        $project_meta = p2p_get_meta($connected_post->p2p_id, 'content_roles');
+                        if ($project_meta) {
+                            foreach ($project_meta as $project_meta_item) {
+                                p2p_add_meta($new_connection_id, 'content_roles', $project_meta_item);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -163,9 +171,17 @@ function revision_applied_update_connected_posts(int $base_post_id = 0, $revisio
 
                 // Copy the now current and approved posts connections of the revision post to the base post
                 foreach ($revision_connected_posts as $connected_post) {
-                    p2p_type($revision_post_connection->name)->connect($base_post->ID, $connected_post->ID, array(
-                        'date' => current_time('mysql')
-                    ));
+                    $new_connection_id = p2p_type($revision_post_connection->name)->connect($base_post->ID, $connected_post->ID);
+
+                    // also copy over post connection meta for projects
+                    if ($revision_post_connection->name == 'contacts_to_projects' && is_int($new_connection_id) ) {
+                        $project_meta = p2p_get_meta($connected_post->p2p_id, 'content_roles');
+                        if ($project_meta) {
+                            foreach ($project_meta as $project_meta_item) {
+                                p2p_add_meta($new_connection_id, 'content_roles', $project_meta_item);
+                            }
+                        }
+                    }
                 }
             }
         }
